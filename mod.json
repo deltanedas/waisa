@@ -1,0 +1,9 @@
+{
+	"name": "waisa",
+	"displayName": "[#cc2222]WAISA",
+	"author": "DeltaNedas",
+	"description": "What Am I Shooting At, shows info on mobile targets.\n[stat]Requires [#00aaff]DeltaNedas/ui-lib[].",
+	"version": "1.0.0",
+	"dependencies": ["ui-lib"],
+	"hidden": true
+}
