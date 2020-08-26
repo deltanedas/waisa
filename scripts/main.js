@@ -15,55 +15,69 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-(() => {
-
 const ui = require("ui-lib/library");
 
-// Table and Entity
 var target = null, lastTarget = null;
+var display = null;
 
-const updateTarget = (enemy) => {
-	target.clear();
+const updateTarget = enemy => {
+	display.clear();
 	if (!enemy) return;
 
-	const block = enemy instanceof TileEntity ? enemy.block : null;
-	const unit = enemy instanceof BaseUnit ? enemy.type : null;
-	const icon = block ? block.icon(Cicon.full) : enemy.iconRegion;
+	const block = enemy instanceof Building ? enemy.block : null;
+	const unit = enemy instanceof Unit ? enemy.type : null;
+	const player = unit && enemy.isPlayer() ? enemy.controller : null;
+	const icon = block ? block.icon(Cicon.full) : enemy.icon();
 
 	/* The WAISA bit, what is the thing being shot */
-	target.table(cons(info => {
-		info.addImage(icon).size(48);
-		// Block, Unit, Player names
-		info.add("[#" + enemy.team.color + "]" + (block ? block.localizedName :
-			unit ? unit.localizedName : enemy.name)).padLeft(5);
-	}));
-	target.row();
+	const info = display.table().get();
+	info.image(icon).size(48);
 
-	target.label(prov(() => Math.round(enemy.healthf() * 100) + "% health"));
-	target.row();
+	// Block, Unit, Player names
+	info.add("[#" + enemy.team.color + "]" + (block ? block.localizedName :
+		player ? player.name : unit.localizedName)).padLeft(5);
+	display.row();
+
+	display.label(() => Math.round(enemy.healthf() * 100) + "% health");
+	display.row();
 
 	if (block) {
-		target.add(enemy.tile.x + ", " + enemy.tile.y);
+		display.add(enemy.tile.x + ", " + enemy.tile.y);
 	} else {
-		target.label(prov(() => Math.round(enemy.x / Vars.tilesize)
-			+ ", " + Math.round(enemy.y / Vars.tilesize)));
+		display.label(() => Math.round(enemy.x / Vars.tilesize)
+			+ ", " + Math.round(enemy.y / Vars.tilesize));
 	}
 };
 
 ui.addTable("bottom", "!enemy", table => {
-	target = table;
+	display = table;
 	table.left();
 	table.defaults().left();
 	table.background(Tex.buttonTrans);
-	table.visible(boolp(() => !!Vars.player.target));
+	table.visibility = () => !!target;
 });
 
-Events.on(EventType.Trigger.update, run(() => {
-	const target = Vars.player.target;
+const check = () => {
 	if (target != lastTarget) {
 		updateTarget(target);
 	}
 	lastTarget = target;
-}));
+};
 
-})();
+// If is here, not in the update handler, to cut cpu usage
+if (Vars.mobile) {
+	Events.run(Trigger.update, () => {
+		target = Vars.control.input.target;
+		check();
+	});
+} else {
+	ui.click((pos, world) => {
+		const found = Units.closestTarget(Vars.player.team,
+			world.x, world.y, 8);
+		if (found) {
+			target = found;
+		}
+	});
+
+	Events.run(Trigger.update, check);
+}
