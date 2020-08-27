@@ -44,6 +44,11 @@ const updateTarget = enemy => {
 	if (block) {
 		display.add(enemy.tile.x + ", " + enemy.tile.y);
 	} else {
+		if (enemy instanceof Shieldc) {
+			display.label(() => "Shield: " + enemy.shield);
+			display.row();
+		}
+
 		display.label(() => Math.round(enemy.x / Vars.tilesize)
 			+ ", " + Math.round(enemy.y / Vars.tilesize));
 	}
