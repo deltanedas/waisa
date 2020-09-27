@@ -33,7 +33,7 @@ const updateTarget = enemy => {
 	const info = display.table().get();
 	info.image(icon).size(48);
 
-	// Block, Unit, Player names
+	/* Block, Unit, Player names */
 	info.add("[#" + enemy.team.color + "]" + (block ? block.localizedName :
 		player ? player.name : unit.localizedName)).padLeft(5);
 	display.row();
@@ -46,6 +46,7 @@ const updateTarget = enemy => {
 	} else {
 		if (enemy instanceof Shieldc) {
 			display.label(() => "Shield: " + enemy.shield);
+			display.label(() => "Aemor: " + enemy.armor);
 			display.row();
 		}
 
