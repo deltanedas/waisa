@@ -3,7 +3,7 @@
 	"displayName": "[#cc2222]WAISA",
 	"author": "DeltaNedas",
 	"description": "What Am I Shooting At, shows info on targeted enemies.\n[stat]Requires [#00aaff]DeltaNedas/ui-lib[].",
-	"version": "2.2.1",
+	"version": "2.2.2",
 	"dependencies": ["ui-lib"],
 	"hidden": true,
 	"minGameVersion": 105
