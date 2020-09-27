@@ -45,8 +45,8 @@ const updateTarget = enemy => {
 		display.add(enemy.tile.x + ", " + enemy.tile.y);
 	} else {
 		if (enemy instanceof Shieldc) {
-			display.label(() => "Shield: " + enemy.shield);
-			display.label(() => "Aemor: " + enemy.armor);
+			display.label(() => "Shield: " + Math.floor(enemy.shield));
+			display.label(() => "Aemor: " + Math.floor(enemy.armor));
 			display.row();
 		}
 
