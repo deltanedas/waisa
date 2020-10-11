@@ -79,7 +79,7 @@ if (Vars.mobile) {
 	});
 } else {
 	ui.click((pos, world) => {
-		const found = Units.closestTarget(Vars.player.team,
+		const found = Units.closestTarget(Vars.player.team(),
 			world.x, world.y, 8);
 		if (found) {
 			target = found;
