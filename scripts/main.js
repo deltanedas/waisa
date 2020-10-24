@@ -38,12 +38,34 @@ const updateTarget = enemy => {
 		player ? player.name : unit.localizedName)).padLeft(5);
 	display.row();
 
-	display.label(() => Math.round(enemy.healthf() * 100) + "% health");
+	display.add(new Bar(
+		() => "Health: " + enemy.health,
+		() => Pal.health,
+		() => enemy.healthf())).size(200, 25);
 	display.row();
 
 	if (block) {
+		if (enemy instanceof Turret.TurretBuild) {
+			// Ammo display for blocks
+			const max = enemy.block.maxAmmo;
+			display.add(new Bar(
+				() => "Ammo: " + enemy.totalAmmo,
+				() => Pal.ammo,
+				() => enemy.totalAmmo / max)).size(200, 25);
+			display.row();
+		}
+
 		display.add(enemy.tile.x + ", " + enemy.tile.y);
 	} else {
+		// Ammo display for units
+		if (enemy instanceof Weaponsc) {
+			display.add(new Bar(
+				() => "Ammo: " + enemy.ammo,
+				() => Pal.ammo,
+				() => enemy.ammof())).size(200, 25);
+			display.row();
+		}
+
 		if (enemy instanceof Shieldc) {
 			display.label(() => "Shield: " + Math.floor(enemy.shield));
 			display.row();
@@ -77,14 +99,18 @@ if (Vars.mobile) {
 		target = Vars.control.input.target;
 		check();
 	});
-} else {
-	ui.click((pos, world) => {
-		const found = Units.closestTarget(Vars.player.team(),
-			world.x, world.y, 8);
-		if (found) {
-			target = found;
-		}
-	});
-
-	Events.run(Trigger.update, check);
 }
+
+// PC and manual aiming
+Events.run(Trigger.update, () => {
+	const p = Vars.player;
+	if (!p.shooting) return;
+
+	const found = Units.closestTarget(p.team(),
+		p.mouseX, p.mouseY, 16);
+	// Keep old info shown until new target shot at
+	if (found) {
+		target = found;
+		check();
+	}
+});
