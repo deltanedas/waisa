@@ -93,15 +93,7 @@ const check = () => {
 	lastTarget = target;
 };
 
-// If is here, not in the update handler, to cut cpu usage
-if (Vars.mobile) {
-	Events.run(Trigger.update, () => {
-		target = Vars.control.input.target;
-		check();
-	});
-}
-
-// PC and manual aiming
+// Find targets
 Events.run(Trigger.update, () => {
 	const p = Vars.player;
 	if (!p.shooting) return;
