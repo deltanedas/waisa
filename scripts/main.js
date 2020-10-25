@@ -84,6 +84,7 @@ ui.addTable("bottom", "!enemy", table => {
 	table.defaults().left();
 	table.background(Tex.buttonTrans);
 	table.visibility = () => !!target && target.health > 0;
+	table.touchable = Touchable.disabled
 });
 
 Events.on(WorldLoadEvent, () => {
