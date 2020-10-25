@@ -83,7 +83,7 @@ ui.addTable("bottom", "!enemy", table => {
 	table.left();
 	table.defaults().left();
 	table.background(Tex.buttonTrans);
-	table.visibility = () => !!target && !target.dead;
+	table.visibility = () => !!target && target.health > 0;
 });
 
 Events.on(WorldLoadEvent, () => {
