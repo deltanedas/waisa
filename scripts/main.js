@@ -39,7 +39,7 @@ const updateTarget = enemy => {
 	display.row();
 
 	display.add(new Bar(
-		() => "Health: " + enemy.health,
+		() => "Health: " + Math.floor(enemy.health),
 		() => Pal.health,
 		() => enemy.healthf())).size(200, 25);
 	display.row();
