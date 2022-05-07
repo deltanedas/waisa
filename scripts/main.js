@@ -27,7 +27,7 @@ const updateTarget = enemy => {
 	const block = enemy instanceof Building ? enemy.block : null;
 	const unit = enemy instanceof Unit ? enemy.type : null;
 	const player = unit && enemy.isPlayer() ? enemy.controller : null;
-	const icon = block ? block.icon(Cicon.full) : enemy.icon();
+	const icon = block ? block.uiIcon : enemy.icon();
 
 	/* The WAISA bit, what is the thing being shot */
 	const info = display.table().get();
@@ -82,7 +82,7 @@ ui.addTable("bottom", "!enemy", table => {
 	display = table;
 	table.left();
 	table.defaults().left();
-	table.background(Tex.buttonTrans);
+	table.background(Tex.button);
 	table.visibility = () => !!target && target.health > 0;
 	table.touchable = Touchable.disabled
 });
