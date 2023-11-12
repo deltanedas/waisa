@@ -4,7 +4,7 @@
 	"author": "deltanedas",
 	"description": "What Am I Shooting At, shows info on targeted enemies.\n[stat]Requires [#00aaff]deltanedas/ui-lib[].",
 	"version": "3.3.3",
-	"dependencies": ["ui-lib"],
+	"dependencies": ["ui_lib"],
 	"hidden": true,
 	"minGameVersion": 136,
 	"repo": "deltanedas/waisa"
